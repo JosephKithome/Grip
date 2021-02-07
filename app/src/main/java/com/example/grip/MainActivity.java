@@ -1,11 +1,14 @@
 package com.example.grip;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 
@@ -30,10 +33,12 @@ public class MainActivity extends AppCompatActivity {
     private  int page_number =1;
     private  int limit = 10;
     private ApiInterface apiInterface;
+    private static final String TAG = "MyActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG, "onCreate: oncreate called");
         setContentView(R.layout.activity_main);
         recyclerView = findViewById(R.id.recycler);
         progressBar = findViewById(R.id.loadingProgress);
@@ -46,13 +51,23 @@ public class MainActivity extends AppCompatActivity {
         progressBar.setVisibility(View.VISIBLE);
         Call<List<CountryData>> call = apiInterface.getCountryData(page_number,limit);
         call.enqueue(new Callback<List<CountryData>>() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onResponse(Call<List<CountryData>> call, Response<List<CountryData>> response) {
-                countryDataList.addAll(response.body());
-                recyclerAdapter = new RecyclerAdapter(countryDataList,MainActivity.this);
-                recyclerView.setAdapter(recyclerAdapter);
-                recyclerAdapter.setCountryDataList(countryDataList);
-                progressBar.setVisibility(View.GONE);
+
+                Log.d(TAG, "onResponse:"+ response.body());
+                if (response.body() != null){
+                    response.body().forEach(countryData -> {
+                        countryDataList.add(countryData);
+                    });
+                    recyclerAdapter = new RecyclerAdapter(countryDataList,MainActivity.this);
+                    recyclerView.setAdapter(recyclerAdapter);
+                    recyclerAdapter.setCountryDataList(countryDataList);
+                    progressBar.setVisibility(View.GONE);
+                }else{
+                    Log.d(TAG, "onResponse: Error loading data");
+                }
+               
             }
 
             @Override
