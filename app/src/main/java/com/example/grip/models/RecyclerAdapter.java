@@ -33,7 +33,7 @@ public class RecyclerAdapter  extends RecyclerView.Adapter<RecyclerAdapter.ViewH
     public RecyclerAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
          View view  = LayoutInflater.from(parent.getContext())
                  .inflate(R.layout.item_row,parent,false);
-        return new ViewHolder(view);
+        return new RecyclerAdapter.ViewHolder(view);
     }
 
     @Override
@@ -43,8 +43,8 @@ public class RecyclerAdapter  extends RecyclerView.Adapter<RecyclerAdapter.ViewH
         holder.capital.setText(data.capital);
         holder.region.setText(data.region);
         holder.subregion.setText(data.subregion);
-        holder.borders.setText(data.borders);
-        holder.languages.setText(data.languages);
+        holder.borders.setText(data.borders.toString());
+        holder.languages.setText(data.languages.toString());
         holder.population.setText(data.population);
 
         Glide.with(context)

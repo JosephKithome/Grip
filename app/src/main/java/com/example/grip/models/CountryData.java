@@ -2,6 +2,9 @@ package com.example.grip.models;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+import java.util.Map;
+
 public class CountryData {
     @SerializedName("name")
     String name;
@@ -22,10 +25,14 @@ public class CountryData {
     String population;
 
     @SerializedName("borders")
-    String borders;
+    List<String> borders;
 
     @SerializedName("languages")
-    String languages;
+    public List<Map<String,String>> languages;
+
+
+
+    private List<String> topLevelDomain;
 
     public CountryData() {
     }
@@ -54,13 +61,7 @@ public class CountryData {
         return population;
     }
 
-    public String getBorders() {
-        return borders;
-    }
 
-    public String getLanguages() {
-        return languages;
-    }
 
     public void setName(String name) {
         this.name = name;
@@ -86,11 +87,5 @@ public class CountryData {
         this.population = population;
     }
 
-    public void setBorders(String borders) {
-        this.borders = borders;
-    }
 
-    public void setLanguages(String languages) {
-        this.languages = languages;
-    }
 }
